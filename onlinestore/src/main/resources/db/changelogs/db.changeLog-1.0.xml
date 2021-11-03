@@ -1,0 +1,11 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1" author="Andrey">
+        <sqlFile path="classpath*:create_db_schema.sql"/>
+    </changeSet>
+    <changeSet id="2" author="Andrey" context="test">
+        <sqlFile path="classpath*:data.sql"/>
+    </changeSet>
+</databaseChangeLog>

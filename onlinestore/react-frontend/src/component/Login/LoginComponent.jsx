@@ -32,7 +32,7 @@ class LoginComponent extends Component {
         console.log('user => ' + JSON.stringify(user));
         AuthService.login(user).then(res => {
             this.props.history.push('/');
-            localStorage.setItem("app_token",'Bearer_' + res.data.token);
+            localStorage.setItem("app_token",'Bearer ' + res.data.token);
         })
     }
     cancel() {

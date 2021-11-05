@@ -37,7 +37,7 @@ public class UserService {
     private final ModelMapper mapper;
 
     @Autowired
-    public UserService(UserDao userDao,RoleDao roleDao, ModelMapper mapper) {
+    public UserService(UserDao userDao, RoleDao roleDao, ModelMapper mapper) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.mapper = mapper;
@@ -47,7 +47,7 @@ public class UserService {
         try {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             List<Role> roles = new ArrayList<>();
-            roles.add(roleDao.getById(2L));
+            roles.add(roleDao.findByName("USER"));
             User user = userDao.save(new User(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), userDto.getDateOfBirth(), userDto.getEmail(), userDto.getPassword(), fileName, userDto.getPhoneNumber(), roles));
             FileUploadUtil.saveFile(user.getId(), fileName, multipartFile);
             return convertToDto(user);
@@ -95,7 +95,7 @@ public class UserService {
     public UserDto updateUser(@Valid UserDto userDto, MultipartFile multipartFile) {
         try {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            User user =userDao.findById(userDto.getId()).orElseThrow(() -> new ServiceException("User with Id " + userDto.getId() + " not found"));
+            User user = userDao.findById(userDto.getId()).orElseThrow(() -> new ServiceException("User with Id " + userDto.getId() + " not found"));
             user.setFirstName(userDto.getFirstName());
             user.setLastName(userDto.getLastName());
             user.setDateOfBirth(userDto.getDateOfBirth());

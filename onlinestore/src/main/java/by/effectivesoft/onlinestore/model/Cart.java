@@ -1,36 +1,39 @@
 package by.effectivesoft.onlinestore.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "cart")
+@Table(name = "carts")
 public class Cart extends BaseEntity {
-    @ManyToMany
-    @JoinTable(name = "cart_products",
-            joinColumns = {@JoinColumn(name = "cart_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")})
-    private List<Product> products;
+
+    @OneToMany(mappedBy = "pk.cart")
+    @Valid
+    private List<CartProduct> cartProducts = new ArrayList<>();
 
     public Cart() {
     }
 
-    public Cart(Long id, List<Product> products) {
-        this.products = products;
+    public Cart(List<CartProduct> cartProducts) {
+        this.cartProducts = cartProducts;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<CartProduct> getCartProducts() {
+        return cartProducts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setCartProducts(List<CartProduct> cartProducts) {
+        this.cartProducts = cartProducts;
     }
 
     @Override
     public String toString() {
         return "Cart{" +
-                "products=" + products +
+                "products=" + cartProducts +
                 '}';
     }
 }

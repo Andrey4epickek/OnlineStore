@@ -9,7 +9,7 @@ class ViewCartComponent extends Component {
         this.state = {
             id: this.props.match.params.id,
             cart: {},
-            products: [],
+            cartProducts: [],
             errorId: '',
             errorCode: '',
             errorMessage: '',
@@ -22,9 +22,9 @@ class ViewCartComponent extends Component {
     }
 
     componentDidMount() {
-        CartService.getCartById(this.state.id).then(res => {
+        CartService.getCart().then(res => {
             this.setState({cart: res.data});
-            this.setState({products: res.data.productDtos});
+            this.setState({cartProducts: res.data.productDtos});
         }).catch(error=> {
             if (error.response) {
                 if(error.response.data.status===403){
@@ -136,25 +136,27 @@ class ViewCartComponent extends Component {
                                 <thead>
                                     <tr>
                                         <th> Product Name</th>
-                                        <th> Product price</th>
+                                        <th> Product Price</th>
+                                        <th> Product Count</th>
                                         <th> Actions</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {
-                                        this.state.products.map(
-                                            product =>
-                                                <tr key={product.id}>
-                                                    <td> {product.name} </td>
-                                                    <td> {product.price} </td>
+                                        this.state.cartProducts.map(
+                                            cartProduct =>
+                                                <tr key={cartProduct.pk.product.id}>
+                                                    <td> {cartProduct.pk.product.name} </td>
+                                                    <td> {cartProduct.pk.product.price} </td>
+                                                    <td> {cartProduct.quantity} </td>
                                                     <td>
                                                         <button style={{marginLeft: "10px"}}
-                                                                onClick={() => this.deleteFromCart(product.id)}
+                                                                onClick={() => this.deleteFromCart(cartProduct.pk.product.id)}
                                                                 className="btn btn-danger">Delete
                                                         </button>
                                                         <button style={{marginLeft: "10px"}}
-                                                                onClick={() => this.viewProduct(product.id)}
+                                                                onClick={() => this.viewProduct(cartProduct.pk.product.id)}
                                                                 className="btn btn-info">View
                                                         </button>
                                                     </td>

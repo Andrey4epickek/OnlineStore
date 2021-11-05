@@ -1,8 +1,5 @@
 package by.effectivesoft.onlinestore.configuration;
 
-import by.effectivesoft.onlinestore.exceptions.ErrorCode;
-import by.effectivesoft.onlinestore.exceptions.ErrorResponse;
-import by.effectivesoft.onlinestore.exceptions.ExceptionHandlerControllerAdvice;
 import by.effectivesoft.onlinestore.security.JwtConfigurer;
 import by.effectivesoft.onlinestore.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,14 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers(HttpMethod.POST,"/users").permitAll()
-                .antMatchers(HttpMethod.PUT,"/carts/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/orders/**").permitAll()
-                .antMatchers(HttpMethod.PUT,"/orders/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.DELETE,"/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.PUT,"/products/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/users/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/**/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

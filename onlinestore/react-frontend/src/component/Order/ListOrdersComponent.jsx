@@ -208,7 +208,6 @@ class ListOrdersComponent extends Component {
                         <tr>
                             <th> Order id</th>
                             <th> User email</th>
-                            <th> Order count</th>
                             <th> Order price</th>
                             <th> Order status</th>
                             <th> Actions</th>
@@ -222,7 +221,6 @@ class ListOrdersComponent extends Component {
                                     <tr key={order.id}>
                                         <td> {order.id} </td>
                                         <td> {order.createdBy} </td>
-                                        <td> {order.count} </td>
                                         <td> {order.price} </td>
                                         <td> {order.status} </td>
                                         <td>

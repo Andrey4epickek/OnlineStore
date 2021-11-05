@@ -7,7 +7,7 @@ import java.util.List;
 public class OrderDto {
 
     private Long id;
-    private List<ProductDto> productDtos;
+    private List<OrderProductDto> productDtos;
     private Integer count;
     private Integer price;
     private OrderStatus status;
@@ -16,7 +16,7 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(Long id, List<ProductDto> productDtos, Integer count, Integer price, OrderStatus status, String createdBy) {
+    public OrderDto(Long id, List<OrderProductDto> productDtos, Integer count, Integer price, OrderStatus status, String createdBy) {
         this.id = id;
         this.productDtos = productDtos;
         this.count = count;
@@ -49,11 +49,11 @@ public class OrderDto {
         this.id = id;
     }
 
-    public List<ProductDto> getProductDtos() {
+    public List<OrderProductDto> getProductDtos() {
         return productDtos;
     }
 
-    public void setProductDtos(List<ProductDto> productDtos) {
+    public void setProductDtos(List<OrderProductDto> productDtos) {
         this.productDtos = productDtos;
     }
 

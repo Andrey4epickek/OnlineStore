@@ -26,7 +26,7 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
     public ResponseEntity<ErrorResponse> handleServiceException(
             ServiceException ex, HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse(generateErrorId(), ErrorCode.ENTITY_NOT_FOUND.getCode(),ErrorCode.ENTITY_NOT_FOUND);
+        ErrorResponse error = new ErrorResponse(generateErrorId(), ErrorCode.ENTITY_NOT_FOUND.getCode(), ErrorCode.ENTITY_NOT_FOUND);
 
         loggerMessage(request, error, ex);
 
@@ -48,7 +48,7 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
     public ResponseEntity<ErrorResponse> handleException(
             Exception ex, HttpServletRequest request) {
 
-        ErrorResponse error = new ErrorResponse(generateErrorId(),ErrorCode.INTERNAL_SERVER_ERROR.getCode(), ErrorCode.INTERNAL_SERVER_ERROR);
+        ErrorResponse error = new ErrorResponse(generateErrorId(), ErrorCode.INTERNAL_SERVER_ERROR.getCode(), ErrorCode.INTERNAL_SERVER_ERROR);
 
         loggerMessage(request, error, ex);
 

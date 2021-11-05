@@ -12,7 +12,7 @@ public enum ErrorCode {
     private String code;
 
     ErrorCode(String code) {
-        this.code= code;
+        this.code = code;
     }
 
     public String getCode() {

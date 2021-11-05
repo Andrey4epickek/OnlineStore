@@ -13,7 +13,11 @@ class RegisterComponent extends Component {
             dateOfBirth: '',
             email: '',
             password: '',
-            file: null
+            file: null,
+            phoneNumber: '',
+            errorId: '',
+            errorCode: '',
+            errorMessage: ''
         }
         this.changePhotoHandler = this.changePhotoHandler.bind(this);
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
@@ -21,6 +25,7 @@ class RegisterComponent extends Component {
         this.changeBirthDateHandler = this.changeBirthDateHandler.bind(this);
         this.changeEmailHandler = this.changeEmailHandler.bind(this);
         this.changePasswordHandler = this.changePasswordHandler.bind(this);
+        this.changePhoneHandler = this.changePhoneHandler.bind(this);
         this.saveUser = this.saveUser.bind(this);
     }
 
@@ -34,6 +39,7 @@ class RegisterComponent extends Component {
             email: this.state.email,
             password: this.state.password,
             photo: this.state.photo,
+            phoneNumber: this.state.phoneNumber
         };
         console.log('user => ' + JSON.stringify(user));
 
@@ -49,8 +55,26 @@ class RegisterComponent extends Component {
         formData.append('photo', file);
 
         UserService.createUser(formData).then(res => {
-            this.props.history.push('/');
-        })
+            this.props.history.push('/users');
+        }).catch(error=> {
+            if (error.response) {
+                if(error.response.data.status===403){
+                    this.setState({errorCode:'errorCode: '+error.response.data.status});
+                    this.setState({errorMessage:'errorMessage: '+error.response.data.error});
+                }
+                else {
+                    this.setState({errorId:'errorId: '+error.response.data.id});
+                    this.setState({errorCode:'errorCode: '+error.response.data.code});
+                    this.setState({errorMessage:'errorMessage: '+error.response.data.message});
+                }
+                    
+              console.log(error.response.data);
+            } else if (error.request) {
+              console.log(error.request.data);
+            } else {
+              console.log('Error', error.message);
+            }
+          })
     }
 
     changePhotoHandler = (event) => {
@@ -78,6 +102,10 @@ class RegisterComponent extends Component {
         this.setState({password: event.target.value});
     }
 
+    changePhoneHandler = (event) => {
+        this.setState({phoneNumber: event.target.value});
+    }
+
     cancel() {
         this.props.history.push('/users');
     }
@@ -88,7 +116,7 @@ class RegisterComponent extends Component {
                 <div className="container" style={{marginTop: "10px"}}>
                     <div className="row">
                         <div className="card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className="text-center">Registration page</h3>
+                            <h3 className="text-center"> Register User</h3>
                             <div className="card-body">
                                 <form>
                                     <div className="form-group">
@@ -99,29 +127,38 @@ class RegisterComponent extends Component {
                                     <div className="form-group">
                                         <label>First Name: </label>
                                         <input placeholder="FirstName" name="firstName" className="form-control"
-                                               value={this.state.firstName} onChange={this.changeFirstNameHandler}/>
+                                               value={this.state.firstName} onChange={this.changeFirstNameHandler} required pattern="[a-zA-Z]{1,50}"/>
                                     </div>
                                     <div className="form-group">
                                         <label>Last Name: </label>
                                         <input placeholder="Last Name" name="lastName" className="form-control"
-                                               value={this.state.lastName} onChange={this.changeLastNameHandler}/>
+                                               value={this.state.lastName} onChange={this.changeLastNameHandler} required pattern="[a-zA-Z]{1,50}"/>
                                     </div>
                                     <div className="form-group">
                                         <label>Birth Date: </label>
                                         <input placeholder="Birth Date" name="dateOfBirth" className="form-control"
-                                               value={this.state.dateOfBirth} onChange={this.changeBirthDateHandler}/>
+                                               value={this.state.dateOfBirth} onChange={this.changeBirthDateHandler} required pattern="\d{4}-\d{2}-\d{2}"/>
                                     </div>
                                     <div className="form-group">
                                         <label>Email address: </label>
                                         <input placeholder="Email address" name="email" className="form-control"
-                                               value={this.state.email} onChange={this.changeEmailHandler}/>
+                                               value={this.state.email} onChange={this.changeEmailHandler} required pattern="^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$"/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Phone number: </label>
+                                        <input placeholder="Phone number" name="phoneNumber" className="form-control"
+                                               value={this.state.phoneNumber} onChange={this.changePhoneHandler} required pattern="^\+(?:[0-9] ?){1,3}[0-9]{6,9}$"/>
                                     </div>
                                     <div className="form-group">
                                         <label>Password: </label>
                                         <input placeholder="Password" name="password" className="form-control"
-                                               value={this.state.password} onChange={this.changePasswordHandler}/>
+                                               value={this.state.password} onChange={this.changePasswordHandler} required min="1"/>
                                     </div>
-
+                                    <div style={{textAlign: 'center'}}>
+                                        <label style={{fontSize: "15pt",color:"red"}}>{this.state.errorId}</label><br/>
+                                        <label style={{fontSize: "15pt",color:"red"}}>{this.state.errorCode}</label><br/>
+                                        <label style={{fontSize: "15pt",color:"red"}}>{this.state.errorMessage}</label>
+                                    </div>
                                     <button className="btn btn-success" onClick={this.saveUser}>Save</button>
                                     <button className="btn btn-danger" onClick={this.cancel.bind(this)}
                                             style={{margin: "10px"}}>Cancel
@@ -135,5 +172,4 @@ class RegisterComponent extends Component {
         );
     }
 }
-
 export default RegisterComponent;

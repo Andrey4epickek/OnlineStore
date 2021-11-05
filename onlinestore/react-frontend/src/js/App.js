@@ -17,6 +17,7 @@ import RegisterComponent from '../component/Register/RegisterComponent';
 import ViewCartComponent from '../component/Cart/ViewCartComponent';
 import ListOrdersComponent from '../component/Order/ListOrdersComponent';
 import ViewOrderComponent from '../component/Order/ViewOrderComponent';
+import ListOrdersAdminComponent from '../component/Order/ListOrdersAdminComponent';
 
 axios.defaults.headers.common["Authorization"]=localStorage.getItem("app_token");
 
@@ -38,8 +39,9 @@ function App() {
                         <Route path="/add-product" component={CreateProductComponent}></Route>
                         <Route path="/update-product/:id" component={UpdateProductComponent}></Route>
                         <Route path="/view-product/:id" component={ViewProductComponent}></Route>
-                        <Route path="/view-cart/:id" component={ViewCartComponent}></Route>
+                        <Route path="/view-cart" component={ViewCartComponent}></Route>
                         <Route path="/orders" component={ListOrdersComponent}></Route>
+                        <Route path="/ordersAdmin" component={ListOrdersAdminComponent}></Route>
                         <Route path="/view-order/:id" component={ViewOrderComponent}></Route>
                         <Route path="/login" component={LoginComponent}></Route>
                         <Route path="/logout" component={LogoutComponent}></Route>

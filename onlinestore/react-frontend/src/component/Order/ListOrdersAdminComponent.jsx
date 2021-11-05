@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import CartService from '../../js/services/CartService';
-import ProductService from '../../js/services/ProductService';
+import OrderService from '../../js/services/OrderService';
 
-class ListProductsComponent extends Component {
+class ListOrdersAdminComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            products: [],
+            orders: [],
             page: 0,
             size: 10,
             sortBy: 'id',
@@ -19,18 +18,14 @@ class ListProductsComponent extends Component {
             errorCode: '',
             errorMessage: ''
         }
-        this.addCart = this.addCart.bind(this);
-        this.addProduct = this.addProduct.bind(this);
-        this.editProduct = this.editProduct.bind(this);
-        this.deleteProduct = this.deleteProduct.bind(this);
-        this.viewProduct = this.viewProduct.bind(this);
-        this.addToCart = this.addToCart.bind(this);
         this.pageNext = this.pageNext.bind(this);
         this.pagePrevious = this.pagePrevious.bind(this);
         this.changeSizeHandler = this.changeSizeHandler.bind(this);
         this.changeSortByHandler = this.changeSortByHandler.bind(this);
         this.changeDirectionHandler = this.changeDirectionHandler.bind(this);
         this.filter = this.filter.bind(this);
+        this.deleteOrder = this.deleteOrder.bind(this);
+        this.viewOrder = this.viewOrder.bind(this);
     }
 
     componentDidMount() {
@@ -41,8 +36,8 @@ class ListProductsComponent extends Component {
         if(this.state.token==='login'){
             this.props.history.push('/login');
         } else {
-        ProductService.getProducts(page,size,sortBy,direction).then((res) => {
-            this.setState({products: res.data});
+        OrderService.getOrdersAdmin(page,size,sortBy,direction).then((res) => {
+            this.setState({orders: res.data});
         }).catch(error=> {
             if (error.response) {
                 if(error.response.data.status===403){
@@ -62,14 +57,10 @@ class ListProductsComponent extends Component {
               console.log('Error', error.message);
             }
           })
-        ProductService.count().then((res)=>{
+        OrderService.count().then((res)=>{
             this.setState({total: Math.ceil(res.data/size)});
         });
     }
-    }
-
-    addProduct() {
-        this.props.history.push('/add-product');
     }
 
     pageNext() {
@@ -77,8 +68,8 @@ class ListProductsComponent extends Component {
         let size = this.state.size;
         let sortBy = this.state.sortBy;
         let direction = this.state.direction;
-        ProductService.getProducts(page+1,size,sortBy,direction).then((res) => {
-                this.setState({products: res.data});
+        OrderService.getOrdersAdmin(page+1,size,sortBy,direction).then((res) => {
+                this.setState({orders: res.data});
                 this.setState({page: this.state.page+1});
                 this.setState({currentPage: this.state.currentPage+1});
         }).catch(error=> {
@@ -100,8 +91,8 @@ class ListProductsComponent extends Component {
         let size = this.state.size;
         let sortBy = this.state.sortBy;
         let direction = this.state.direction;
-        ProductService.getProducts(page-1,size,sortBy,direction).then((res) => {
-                this.setState({products: res.data});
+        OrderService.getOrdersAdmin(page-1,size,sortBy,direction).then((res) => {
+                this.setState({orders: res.data});
                 this.setState({page: this.state.page-1});
                 this.setState({currentPage: this.state.currentPage-1});
         });
@@ -124,64 +115,39 @@ class ListProductsComponent extends Component {
         let size = this.state.size;
         let sortBy = this.state.sortBy;
         let direction = this.state.direction;
-        ProductService.getProducts(0,size,sortBy,direction).then((res) => {
-                this.setState({products: res.data});
+        OrderService.getOrdersAdmin(0,size,sortBy,direction).then((res) => {
+                this.setState({orders: res.data});
                 this.setState({currentPage: 1});
                 this.setState({errorId:'' });
                 this.setState({errorCode:'' });
                 this.setState({errorMessage:'' });
         }).catch(error=> {
             if (error.response) {
-                this.setState({errorId:'errorId: '+error.response.data.id});
-                this.setState({errorCode:'errorCode: '+error.response.data.code});
-                this.setState({errorMessage:'errorMessage: '+error.response.data.message});
+                if(error.response.data.status===403){
+                    this.setState({errorCode:'errorCode: '+error.response.data.status});
+                    this.setState({errorMessage:'errorMessage: '+error.response.data.error});
+                }
+                else {
+                    this.setState({errorId:'errorId: '+error.response.data.id});
+                    this.setState({errorCode:'errorCode: '+error.response.data.code});
+                    this.setState({errorMessage:'errorMessage: '+error.response.data.message});
+                }
+                    
               console.log(error.response.data);
             } else if (error.request) {
               console.log(error.request.data);
             } else {
               console.log('Error', error.message);
             }
-          });
-        ProductService.count().then((res)=>{
+          })
+        OrderService.count().then((res)=>{
             this.setState({total: Math.ceil(res.data/size)});
         });
     }
 
-    viewProduct(id){
-        this.props.history.push(`/view-product/${id}`);
-    }
-
-    editProduct(id){
-        this.props.history.push(`/update-product/${id}`);
-    }
-
-    addToCart(productId){
-        CartService.addToCart(productId).then(res => {
-            this.props.history.push('/products');
-        }).catch(error=> {
-            if (error.response) {
-                if(error.response.data.status===403){
-                    this.setState({errorCode:'errorCode: '+error.response.data.status});
-                    this.setState({errorMessage:'errorMessage: '+error.response.data.error});
-                }
-                else {
-                    this.setState({errorId:'errorId: '+error.response.data.id});
-                    this.setState({errorCode:'errorCode: '+error.response.data.code});
-                    this.setState({errorMessage:'errorMessage: '+error.response.data.message});
-                }
-                    
-              console.log(error.response.data);
-            } else if (error.request) {
-              console.log(error.request.data);
-            } else {
-              console.log('Error', error.message);
-            }
-          })
-    }
-
-    deleteProduct(id){
-        ProductService.deleteProduct(id).then( res => {
-            this.setState({products: this.state.products.filter(product => product.id !==id)});
+    deleteOrder(id){
+        OrderService.deleteOrder(id).then( res => {
+            this.setState({orders: this.state.orders.filter(order => order.id !==id)});
         }).catch(error=> {
             if (error.response) {
                 if(error.response.data.status===403){
@@ -203,33 +169,16 @@ class ListProductsComponent extends Component {
           });
     }
 
-    addCart = (e) => {
-        e.preventDefault();
-
-        CartService.createCart().then(res => {
-            this.props.history.push('/products');
-        }).catch(error=> {
-            if (error.response) {
-                this.setState({errorId:'errorId: '+error.response.data.id});
-                this.setState({errorCode:'errorCode: '+error.response.data.code});
-                this.setState({errorMessage:'errorMessage: '+error.response.data.message});
-              console.log(error.response.data);
-            } else if (error.request) {
-              console.log(error.request.data);
-            } else {
-              console.log('Error', error.message);
-            }
-          })
+    viewOrder(id){
+        this.props.history.push(`/view-order/${id}`);
     }
+
 
     render() {
         return (
             <div>
-                <h2 className="text-center">Products List</h2>
-                <div className="row">
-                    <button className="btn btn-primary" onClick={this.addProduct}>Add Product</button>
-                    <button className="btn btn-primary" onClick={this.addCart} style={{marginLeft: "10px"}}>Create Cart</button>
-                </div>
+                <h2 className="text-center">Orders List</h2>
+            
                 <div className="row" style={{marginTop: "10px",marginBottom: "10px"}}>
                     <div>
                     <label>Page size: </label>
@@ -257,34 +206,31 @@ class ListProductsComponent extends Component {
 
                         <thead>
                         <tr>
-                            <th> Product Name</th>
-                            <th> Product price</th>
+                            <th> Order id</th>
+                            <th> User email</th>
+                            <th> Order price</th>
+                            <th> Order status</th>
                             <th> Actions</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         {
-                            this.state.products.map(
-                                product =>
-                                    <tr key={product.id}>
-                                        <td> {product.name} </td>
-                                        <td> {product.price} </td>
+                            this.state.orders.map(
+                                order =>
+                                    <tr key={order.id}>
+                                        <td> {order.id} </td>
+                                        <td> {order.createdBy} </td>
+                                        <td> {order.price} </td>
+                                        <td> {order.status} </td>
                                         <td>
-                                            <button onClick={() => this.editProduct(product.id)}
-                                                    className="btn btn-info">Update
-                                            </button>
                                             <button style={{marginLeft: "10px"}}
-                                                    onClick={() => this.deleteProduct(product.id)}
+                                                    onClick={() => this.deleteOrder(order.id)}
                                                     className="btn btn-danger">Delete
                                             </button>
                                             <button style={{marginLeft: "10px"}}
-                                                    onClick={() => this.viewProduct(product.id)}
+                                                    onClick={() => this.viewOrder(order.id)}
                                                     className="btn btn-info">View
-                                            </button>
-                                            <button style={{marginLeft: "10px"}}
-                                                    onClick={() => this.addToCart(product.id)}
-                                                    className="btn btn-primary">Add to Cart
                                             </button>
                                         </td>
                                     </tr>
@@ -309,4 +255,4 @@ class ListProductsComponent extends Component {
     }
 }
 
-export default ListProductsComponent;
+export default ListOrdersAdminComponent;

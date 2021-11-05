@@ -1,18 +1,19 @@
 package by.effectivesoft.onlinestore.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
-    @ManyToMany
-    @JoinTable(name = "order_products",
-            joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")})
-    private List<Product> products;
-    @Column(name = "count")
-    private Integer count;
+
+    @OneToMany(mappedBy = "pk.order")
+    @Valid
+    private List<OrderProduct> orderProducts = new ArrayList<>();
     @Column(name = "price")
     private Integer price;
     @Enumerated(EnumType.STRING)
@@ -22,9 +23,8 @@ public class Order extends BaseEntity {
     public Order() {
     }
 
-    public Order(Long id, List<Product> products, Integer count, Integer price, OrderStatus status) {
-        this.products = products;
-        this.count = count;
+    public Order(List<OrderProduct> orderProducts, Integer price, OrderStatus status) {
+        this.orderProducts = orderProducts;
         this.price = price;
         this.status = status;
     }
@@ -37,20 +37,12 @@ public class Order extends BaseEntity {
         this.status = status;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 
     public Integer getPrice() {
@@ -64,8 +56,7 @@ public class Order extends BaseEntity {
     @Override
     public String toString() {
         return "Order{" +
-                "products=" + products +
-                ", count=" + count +
+                "products=" + orderProducts +
                 ", price=" + price +
                 '}';
     }

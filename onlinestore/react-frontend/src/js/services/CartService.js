@@ -13,16 +13,16 @@ class CartService {
         return axios.post(PRODUCTS_API_BASE_URL);
     }
 
-    getCartById(cartId) {
-        return axios.get(PRODUCTS_API_BASE_URL + '/' + cartId);
+    getCart() {
+        return axios.get(PRODUCTS_API_BASE_URL);
     }
 
     getTotalPrice() {
-        return axios.get(PRODUCTS_API_BASE_URL + '/total/'+1);
+        return axios.get(PRODUCTS_API_BASE_URL + '/total');
     }
 
     addToCart(productId){
-        return axios.put(PRODUCTS_API_BASE_URL + '/1/'+productId);
+        return axios.put(PRODUCTS_API_BASE_URL + '/'+productId);
     }
 
     deleteFromCart(productId){

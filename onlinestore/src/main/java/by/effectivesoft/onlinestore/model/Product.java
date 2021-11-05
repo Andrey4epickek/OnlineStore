@@ -1,36 +1,25 @@
 package by.effectivesoft.onlinestore.model;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "products")
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
 
     @Column(name = "name")
     private String name;
     @Column(name = "price")
     private Integer price;
-    @ManyToMany(mappedBy = "products")
-    private List<Cart> carts;
-    @ManyToMany(mappedBy = "products")
-    private List<Order> orders;
 
     public Product() {
 
     }
 
-    public Product(Long id,  String name, Integer price) {
+    public Product(Long id, String name, Integer price) {
         this.name = name;
         this.price = price;
-    }
-
-    public List<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(List<Cart> carts) {
-        this.carts = carts;
     }
 
     public String getName() {
@@ -52,8 +41,7 @@ public class Product extends BaseEntity{
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + getId() +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", price=" + price +
                 '}';
     }

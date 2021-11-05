@@ -8,7 +8,7 @@ class ViewOrderComponent extends Component {
         this.state = {
             id: this.props.match.params.id,
             order: {},
-            products: [],
+            orderProducts: [],
             errorId: '',
             errorCode: '',
             errorMessage: '',
@@ -21,7 +21,7 @@ class ViewOrderComponent extends Component {
     componentDidMount() {
         OrderService.getOrderById(this.state.id).then(res => {
             this.setState({order: res.data});
-            this.setState({products: res.data.productDtos});
+            this.setState({orderProducts: res.data.productDtos});
         }).catch(error=> {
             if (error.response) {
                 if(error.response.data.status===403){
@@ -68,20 +68,22 @@ class ViewOrderComponent extends Component {
                                     <tr>
                                         <th> Product Name</th>
                                         <th> Product price</th>
+                                        <th> Product Count</th>
                                         <th> Actions</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {
-                                        this.state.products.map(
-                                            product =>
-                                                <tr key={product.id}>
-                                                    <td> {product.name} </td>
-                                                    <td> {product.price} </td>
+                                        this.state.orderProducts.map(
+                                            orderProduct =>
+                                                <tr key={orderProduct.pk.product.id}>
+                                                    <td> {orderProduct.pk.product.name} </td>
+                                                    <td> {orderProduct.pk.product.price} </td>
+                                                    <td> {orderProduct.quantity} </td>
                                                     <td>
                                                         <button style={{marginLeft: "10px"}}
-                                                                onClick={() => this.viewProduct(product.id)}
+                                                                onClick={() => this.viewProduct(orderProduct.pk.product.id)}
                                                                 className="btn btn-info">View
                                                         </button>
                                                     </td>
@@ -92,7 +94,6 @@ class ViewOrderComponent extends Component {
                             </table>
                         </div>
                         <div className="row">
-                            <label>Total cout: {this.state.order.count}</label>
                             <label style={{marginLeft: "10px"}}>Total price: {this.state.order.price}</label>
                             <label style={{marginLeft: "10px"}}>Order status: {this.state.order.status}</label>
                         </div>

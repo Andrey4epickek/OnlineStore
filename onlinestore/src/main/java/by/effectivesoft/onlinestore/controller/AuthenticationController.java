@@ -34,14 +34,13 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
         try {
-            String username=requestDto.getEmail();
+            String username = requestDto.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword()));
             User user = userService.findByEmail(requestDto.getEmail());
-            System.out.println(user.getRoles());
-            String token=jwtTokenProvider.createToken(username,user.getRoles());
-            Map<Object,Object> response=new HashMap<>();
-            response.put("email",username);
-            response.put("token",token);
+            String token = jwtTokenProvider.createToken(username, user.getRoles());
+            Map<Object, Object> response = new HashMap<>();
+            response.put("email", username);
+            response.put("token", token);
             return ResponseEntity.ok(response);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

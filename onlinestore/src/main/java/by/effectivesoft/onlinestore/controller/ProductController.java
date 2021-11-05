@@ -3,6 +3,7 @@ package by.effectivesoft.onlinestore.controller;
 import by.effectivesoft.onlinestore.model.dto.ProductDto;
 import by.effectivesoft.onlinestore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,16 +34,19 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public ProductDto createProduct( @RequestBody ProductDto productDto) {
-            return productService.createProduct(productDto);
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         return productService.updateProduct(productDto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") Long id) {
         productService.getProductById(id);

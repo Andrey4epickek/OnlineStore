@@ -16,7 +16,7 @@ class HeaderComponent extends Component {
                             <a href="http://localhost:3000" className="navbar-brand">Main page</a>
                             <a href="http://localhost:3000/users" className="navbar-brand">Users</a>
                             <a href="http://localhost:3000/products" className="navbar-brand">Products</a>
-                            <a href="http://localhost:3000/view-cart/1" className="navbar-brand">Cart</a>
+                            <a href="http://localhost:3000/view-cart" className="navbar-brand">Cart</a>
                             <a href="http://localhost:3000/orders" className="navbar-brand">Orders</a>
                         </div>
                         <div style={{marginLeft: "auto",marginRight:"50px"}}>

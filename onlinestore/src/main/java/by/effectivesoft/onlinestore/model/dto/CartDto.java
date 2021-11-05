@@ -5,21 +5,21 @@ import java.util.List;
 public class CartDto {
 
     private Long id;
-    private List<ProductDto> productDtos;
+    private List<CartProductDto> productDtos;
 
     public CartDto() {
     }
 
-    public CartDto(Long id, List<ProductDto> productDtos) {
+    public CartDto(Long id, List<CartProductDto> productDtos) {
         this.id = id;
         this.productDtos = productDtos;
     }
 
-    public List<ProductDto> getProductDtos() {
+    public List<CartProductDto> getProductDtos() {
         return productDtos;
     }
 
-    public void setProductDtos(List<ProductDto> productDtos) {
+    public void setProductDtos(List<CartProductDto> productDtos) {
         this.productDtos = productDtos;
     }
 

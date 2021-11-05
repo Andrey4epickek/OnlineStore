@@ -12,6 +12,10 @@ class OrderService {
         return axios.get(PRODUCTS_API_BASE_URL+'?page='+page+'&size='+size+'&sortBy='+sortBy+'&direction='+direction);
     }
 
+    getOrdersAdmin(page,size,sortBy,direction) {
+        return axios.get(PRODUCTS_API_BASE_URL+'/admin?page='+page+'&size='+size+'&sortBy='+sortBy+'&direction='+direction);
+    }
+
     count(){
         return axios.get(PRODUCTS_API_BASE_URL+'/total');
     }

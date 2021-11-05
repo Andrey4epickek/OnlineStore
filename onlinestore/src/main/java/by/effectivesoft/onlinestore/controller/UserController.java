@@ -53,6 +53,7 @@ public class UserController {
         return userService.updateUser(userDto, multipartFile);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         userService.getUserById(id);

@@ -18,6 +18,8 @@ import ViewCartComponent from '../component/Cart/ViewCartComponent';
 import ListOrdersComponent from '../component/Order/ListOrdersComponent';
 import ViewOrderComponent from '../component/Order/ViewOrderComponent';
 import ListOrdersAdminComponent from '../component/Order/ListOrdersAdminComponent';
+import CreateReviewComponent from '../component/Review/CreateReviewComponent';
+import CreateSubReviewComponent from '../component/Review/CreateSubReviewComponent';
 
 axios.defaults.headers.common["Authorization"]=localStorage.getItem("app_token");
 
@@ -43,6 +45,8 @@ function App() {
                         <Route path="/orders" component={ListOrdersComponent}></Route>
                         <Route path="/ordersAdmin" component={ListOrdersAdminComponent}></Route>
                         <Route path="/view-order/:id" component={ViewOrderComponent}></Route>
+                        <Route path="/add-review/:id" component={CreateReviewComponent}></Route>
+                        <Route path="/add-subReview/:productId/:reviewId" component={CreateSubReviewComponent}></Route>
                         <Route path="/login" component={LoginComponent}></Route>
                         <Route path="/logout" component={LogoutComponent}></Route>
                         <Route path="/register" component={RegisterComponent}></Route>

@@ -4,6 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 public class ProductDto {
 
@@ -14,6 +15,7 @@ public class ProductDto {
     @Min(1)
     @Max(100500)
     private Integer price;
+    private List<ReviewDto> reviewDtos;
 
     public ProductDto() {
     }
@@ -22,6 +24,21 @@ public class ProductDto {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public ProductDto(Long id, String name, Integer price, List<ReviewDto> reviewDtos) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.reviewDtos = reviewDtos;
+    }
+
+    public List<ReviewDto> getReviewDtos() {
+        return reviewDtos;
+    }
+
+    public void setReviewDtos(List<ReviewDto> reviewDtos) {
+        this.reviewDtos = reviewDtos;
     }
 
     public Long getId() {

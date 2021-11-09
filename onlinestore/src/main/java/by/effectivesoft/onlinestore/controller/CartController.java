@@ -4,7 +4,6 @@ import by.effectivesoft.onlinestore.model.dto.CartDto;
 import by.effectivesoft.onlinestore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;

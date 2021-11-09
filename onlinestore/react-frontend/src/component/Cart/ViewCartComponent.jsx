@@ -51,7 +51,7 @@ class ViewCartComponent extends Component {
 
     clearCart(id){
         CartService.clearCart(id).then(res => {
-            this.props.history.push('/products');
+            window.location.reload();
         }).catch(error=> {
             if (error.response) {
                 if(error.response.data.status===403){
@@ -99,7 +99,7 @@ class ViewCartComponent extends Component {
 
     deleteFromCart(id){
         CartService.deleteFromCart(id).then(res => {
-            this.props.history.push('/products');
+            window.location.reload();
         }).catch(error=> {
             if (error.response) {
                 if(error.response.data.status===403){
